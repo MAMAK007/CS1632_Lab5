@@ -42,7 +42,7 @@ public class Tokenizer {
                 do {
                     ch = nextChar();
                     if ((ch >= '0') && (ch <= '9')) {
-                        nString += ch;
+                    	nString += (char) ch;
                     }
                     else {
                         putback(ch);
