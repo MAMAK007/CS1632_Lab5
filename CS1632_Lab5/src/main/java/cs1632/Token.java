@@ -1,4 +1,4 @@
-package cs1632;
+package main.java.cs1632;
 
 public class Token {
     private String tokenString;

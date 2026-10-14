@@ -1,4 +1,4 @@
-package cs1632;
+package main.java.cs1632;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -68,6 +68,7 @@ public class Tokenizer {
                         return new OpToken(ch);
                     default:
                         System.err.println("Unknown character (" + ((char) ch) + ")");
+                        ch = nextChar();
                         break;
                 }
             }

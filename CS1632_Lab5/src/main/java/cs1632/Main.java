@@ -1,4 +1,4 @@
-package cs1632;
+package main.java.cs1632;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -29,21 +29,107 @@ public class Main {
     }
 
     public static void main(String[] args) {
+    	
+    	System.out.println(" -- PREFIX CALCULATOR --\n");
+    	
         try {
             Tokenizer myScanner = new Tokenizer(System.in);
             ArrayList<Token> tokenSequence;
             ArrayList<Token> postfixSequence = null;
             do {
-                System.out.print("Equation: ");
+                System.out.print("Input an equation: ");
                 tokenSequence = getNextSequence(myScanner);
                 if (tokenSequence != null) {
-                    // Replace the code starting here with code to evaluate the expression
-                    System.out.print("Read equation: ");
+                    // Print initial input
+                    System.out.print("Your input: ");
                     for (Token tok : tokenSequence) {
                         System.out.print(tok.getTokenString() + " ");
                     }
                     System.out.println();
-                    // End where to replace
+                    
+                    // Create the stack
+                    OpStack<Token> newOpStack = new OpStack<Token>();
+                    for (Token tok : tokenSequence) {
+                    	if (tok.getTokenString().equals(";")) {
+                    		continue;
+                    	} else {
+                    		newOpStack.push(tok);
+                    	}
+                    }
+                    
+                    // Create the flipped stack
+                    OpStack<Token> flippedOpStack = new OpStack<Token>();
+                    while (!newOpStack.isEmpty()) {
+                    	// Pop value to process
+                    	Token val = newOpStack.pop();
+                    	
+                    	// Addition operation
+                    	if (val.getTokenString().equals("+")) {
+                    		Token token1 = flippedOpStack.pop();
+                    		int num1 = Integer.parseInt(token1.getTokenString());
+                    		
+                    		Token token2 = flippedOpStack.pop();
+                    		int num2 = Integer.parseInt(token2.getTokenString());
+                    		
+                    		int sumNums = (num1 + num2);
+                    		Token newToken = new Token(Integer.toString(sumNums));
+                    		
+                    		flippedOpStack.push(newToken);                    		
+                    	} 
+                    	
+                    	// Subtraction operation
+                    	else if (val.getTokenString().equals("-")) {
+							Token token1 = flippedOpStack.pop();
+                    		int num1 = Integer.parseInt(token1.getTokenString());
+                    		
+                    		Token token2 = flippedOpStack.pop();
+                    		int num2 = Integer.parseInt(token2.getTokenString());
+                    		
+                    		int diffNums = (num1 - num2);
+                    		Token newToken = new Token(Integer.toString(diffNums));
+                    		
+                    		flippedOpStack.push(newToken);  
+                    	} 
+                    	
+						// Multiplication operation
+                    	else if (val.getTokenString().equals("*")) {
+							Token token1 = flippedOpStack.pop();
+                    		int num1 = Integer.parseInt(token1.getTokenString());
+                    		
+                    		Token token2 = flippedOpStack.pop();
+                    		int num2 = Integer.parseInt(token2.getTokenString());
+                    		
+                    		int prodNums = (num1 * num2);
+                    		Token newToken = new Token(Integer.toString(prodNums));
+                    		
+                    		flippedOpStack.push(newToken);               		
+						} 
+						
+						// Division operation
+                    	else if (val.getTokenString().equals("/")) {
+							Token token1 = flippedOpStack.pop();
+                    		int num1 = Integer.parseInt(token1.getTokenString());
+                    		
+                    		Token token2 = flippedOpStack.pop();
+                    		int num2 = Integer.parseInt(token2.getTokenString());
+                    		
+                			int divNums = (num1 / num2);
+                			Token newToken = new Token(Integer.toString(divNums));
+                    		
+                    		flippedOpStack.push(newToken);  
+						} 
+						
+						// Push number (if not an operand)
+                    	else {
+                    		flippedOpStack.push(val);
+                    	}
+                    }
+                    
+                    System.out.print("Result: ");
+                    while (!flippedOpStack.isEmpty()) {
+                        System.out.print(flippedOpStack.pop().getTokenString() + " ");
+                    }
+                    System.out.println("\n");
                 }
             } while (tokenSequence != null);
         }

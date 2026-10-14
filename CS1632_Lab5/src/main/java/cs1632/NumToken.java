@@ -1,4 +1,4 @@
-package cs1632;
+package main.java.cs1632;
 
 public class NumToken extends Token {
     protected NumToken() { super(""); }
